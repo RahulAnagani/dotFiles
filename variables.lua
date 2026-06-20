@@ -1,0 +1,6 @@
+terminal = "kitty"
+fileManager = "thunar"
+browser = "brave"
+menu = "vicinae toggle"
+screenshot = "hyprshot -m region --clipboard-only"
+vscode = "code"
