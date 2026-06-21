@@ -16,4 +16,5 @@
 hl.on("hyprland.start", function()
     hl.exec_cmd("vicinae server")
     hl.exec_cmd("swaync")
+    hl.exec_cmd("hyprpaper -c ~/.config/hypr/hyprpaper.conf")
 end)
