@@ -1,5 +1,5 @@
 terminal = "kitty"
-fileManager = "thunar"
+fileManager = "dolphin"
 browser = "brave"
 menu = "vicinae toggle"
 screenshot = "hyprshot -m region --clipboard-only"

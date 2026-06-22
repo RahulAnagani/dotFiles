@@ -59,8 +59,8 @@ hl.bind("XF86AudioMute", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ to
     { locked = true, repeating = true })
 hl.bind("XF86AudioMicMute", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"),
     { locked = true, repeating = true })
-hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%+"), { locked = true, repeating = true })
-hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%-"), { locked = true, repeating = true })
+hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 2%+"), { locked = true, repeating = true })
+hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 7%-"), { locked = true, repeating = true })
 
 -- Requires playerctl
 hl.bind("XF86AudioNext", hl.dsp.exec_cmd("playerctl next"), { locked = true })
@@ -75,12 +75,45 @@ hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), { locked = true 
 --     hl.exec_cmd("notify-send jo")
 -- end)
 
-hl.bind("CTRL + G", function()
+-- Debuggin Purpose
+-- hl.bind("CTRL + G", function()
+--     local workspaces = hl.get_workspaces()
+--     local f = io.open("/tmp/hyprlua.log", "a")
+--     f:write("hi" .. "\n")
+--     for k, v in pairs(workspaces) do
+--         if not v.special then
+--             f:write(v.id .. " " .. tostring(v.last_window.class) .. "\n")
+--         end
+--     end
+--     f:close()
+-- end)
+
+-- Slide through workspaces
+hl.bind(mainMod .. "+ TAB", function()
+    -- local f = io.open("/tmp/hyprlua.log", "w")
+    -- f:write(currentWorkspace.id)
     local workspaces = hl.get_workspaces()
-    for k, v in pairs(workspaces) do
-
+    local current_workspace = -1
+    local ids = {}
+    for _, ws in pairs(workspaces) do
+        if not ws.special and not is_empty then
+            table.insert(ids, ws.id)
+        end
+        if ws.active then
+            current_workspace = ws.id
+        end
     end
+    table.sort(ids)
+    local next_ws_id = -1
+    for ind, id in pairs(ids) do
+        if id == current_workspace then
+            next_ws_id = ids[ind + 1] or ids[1]
+        end
+    end
+    -- f:write("\n")
+    -- f:write(current_workspace)
+    hl.dispatch(
+        hl.dsp.focus({ workspace = next_ws_id })
+    )
+    -- f:close()
 end)
-
-
--- hl.bind("CTRL + ALT + K ", hl.dsp.focus({ workspace = 1 }))
